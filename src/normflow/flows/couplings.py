@@ -178,19 +178,26 @@ class RealNVP(Flow):
         Returns:
             Tuple of transformed tensor and log determinant
         """
-        masked_x = x * mask[:, None]
+        # Fix: Use proper broadcasting by reshaping mask to (1, dim)
+        # This will correctly broadcast to (batch_size, dim)
+        mask_reshaped = mask[None, :]  # Shape (1, dim)
+
+        # Apply mask to input (element-wise multiplication)
+        masked_x = x * mask_reshaped  # Now shapes are compatible: (batch_size, dim) * (1, dim)
+
+        # Get shift and scale from coupling network
         shift, scale = coupling_fn.apply(params, masked_x)
 
         # Scale factor from tanh is in [-1, 1], add 1 to ensure positive
         # and clamp to ensure numerical stability
-        scale_factor = jnp.exp(scale * (1 - mask[:, None]))
+        scale_factor = jnp.exp(scale * (1 - mask_reshaped))
 
         if inverse:
-            transformed_x = (x - shift * (1 - mask[:, None])) / scale_factor
-            log_det = -jnp.sum(scale * (1 - mask[:, None]), axis=-1)
+            transformed_x = (x - shift * (1 - mask_reshaped)) / scale_factor
+            log_det = -jnp.sum(scale * (1 - mask_reshaped), axis=-1)
         else:
-            transformed_x = x * mask[:, None] + (x * scale_factor + shift) * (1 - mask[:, None])
-            log_det = jnp.sum(scale * (1 - mask[:, None]), axis=-1)
+            transformed_x = x * mask_reshaped + (x * scale_factor + shift) * (1 - mask_reshaped)
+            log_det = jnp.sum(scale * (1 - mask_reshaped), axis=-1)
 
         return transformed_x, log_det
 

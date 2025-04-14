@@ -607,9 +607,12 @@ class ZfitComparer:
         """
         # Convert to TensorFlow tensor
         x_tf = tf.convert_to_tensor(x, dtype=tf.float64)
+        shape = x_tf.shape
+        x_tf = tf.reshape(x_tf, (-1, self.zfit_model.space.n_obs))
         
         # Compute log probability
-        log_prob = self.zfit_model.log_prob(x_tf)
+        log_prob = self.zfit_model.log_pdf(x_tf)
+        log_prob = tf.reshape(log_prob, shape[:-1])
         
         # Run the TensorFlow graph
         return zfit.run(log_prob)

@@ -232,8 +232,9 @@ def evaluate_models(model, flow, flow_params, data, obs_space):
     for metric, values in cov_results.items():
         print(f"  {metric}:")
         for key, value in values.items():
-            print(f"    {key}: {value:.6f}")
-    
+            # print(f"    {key}: {value:.6f}")
+            print(f"    {key}: {value}")
+
     # Create ZfitComparer
     zfit_comparer = ZfitComparer(
         flow=flow,
@@ -249,8 +250,9 @@ def evaluate_models(model, flow, flow_params, data, obs_space):
     for metric, values in zfit_results.items():
         print(f"  {metric}:")
         for key, value in values.items():
-            print(f"    {key}: {value:.6f}")
-    
+            # print(f"    {key}: {value:.6f}")
+            print(f"    {key}: {value}")
+
     return cov_results, zfit_results
 
 
