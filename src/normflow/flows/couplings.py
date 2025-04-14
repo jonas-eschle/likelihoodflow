@@ -9,7 +9,7 @@ import jax.numpy as jnp
 from jax import random, nn
 import haiku as hk
 
-from normflow_zfit.flows.base import Flow
+from normflow.flows.base import Flow
 
 
 def create_mlp_fn(hidden_dims: List[int],

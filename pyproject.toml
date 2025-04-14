@@ -1,0 +1,104 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "normflow"
+version = "0.1.0"
+description = "Normalizing flow models for approximating probability distributions from zfit fits"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "jax>=0.4.8",
+    "jaxlib>=0.4.7",
+    "dm-haiku>=0.0.9",
+    "optax>=0.1.4",
+    "numpy>=1.22.0",
+    "matplotlib>=3.5.0",
+    "zfit>=0.11.0",
+    "tensorflow>=2.10.0",
+    "scipy>=1.8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.0.256",
+    "black>=23.1.0",
+    "pre-commit>=3.0.0",
+    "mypy>=1.0.0",
+]
+compression = [
+    "scikit-learn>=1.0.0",
+]
+onnx = [
+    "onnx>=1.12.0",
+    "onnxruntime>=1.12.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/normflow"
+"Bug Tracker" = "https://github.com/yourusername/normflow/issues"
+"Documentation" = "https://github.com/yourusername/normflow#readme"
+"Source Code" = "https://github.com/yourusername/normflow"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/normflow"]
+
+[tool.ruff]
+target-version = "py38"
+line-length = 100
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "B",    # flake8-bugbear
+    "I",    # isort
+    "C4",   # flake8-comprehensions
+    "UP",   # pyupgrade
+    "D",    # pydocstyle
+    "N",    # pep8-naming
+    "SIM",  # flake8-simplify
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "D107",  # missing docstring in __init__
+    "D203",  # one-blank-line-before-class (conflicts with D211)
+    "D212",  # multi-line-summary-first-line (conflicts with D213)
+]
+
+[tool.ruff.isort]
+known-first-party = ["normflow"]
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.black]
+line-length = 100
+target-version = ["py38"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
